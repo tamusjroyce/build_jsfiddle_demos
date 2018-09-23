@@ -1,0 +1,21 @@
+{
+  "name": "tamusjroyce_test_temporary_will_delete_soon",
+  "version": "0.0.0",
+  "description": "A cross-platform node tool that builds fiddle.js appropriate demo folders based on each html file found. \nThe html file has all <link rel=\"import\" href=\"/path/to/file.html\" /> replaced with the linked file contents. \nIt also does its best to combines all locally referenced css files into demo.css. And javascript files as demo.js. \nIt also adds a blank demo.details file if one does not exist.",
+  "main": "build_demos.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "static",
+    "generator",
+    "jsfiddle",
+    "demo"
+  ],
+  "author": "TamusJRoyce <tamusjroyce@hotmail.com> (https://github.com/tamusjroyce/build_jsfiddle_demos)",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0"
+  }
+}

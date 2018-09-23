@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Touch events | Fabric.js Demos</title>
+
+    <link rel="stylesheet" href="../css/master.css">
+    <link rel="stylesheet" href="../css/prism.css">
+
+    <!--[if lt IE 9]>
+      <script src="../lib/excanvas.js"></script>
+    <![endif]-->
+
+    <script src="../lib/prism.js"></script>
+    <script src="../lib/fabric_with_gestures.js"></script>
+    <script src="../js/master.js"></script>
+  </head>
+  <body>
+    <ul id="header">
+  <li><a href="http://fabricjs.com/">Home</a></li>
+  <li><a href="http://fabricjs.com/demos">Demos</a></li>
+  <li><a href="http://fabricjs.com/articles">Tutorial</a></li>
+  <li><a href="http://fabricjs.com/docs">Docs</a></li>
+  <li><a href="http://fabricjs.com/build">Custom Build</a></li>
+  <li><a href="http://fabricjs.com/help">Support</a></li>
+  <li><a href="http://fabricjs.com/test">Tests/Benchmarks</a></li>
+  <li><a href="http://fabricjs.com/team">Team</a></li>
+  <li class="github secondary">
+    <a class="github-button" href="https://github.com/fabricjs/fabric.js" data-size="large" data-show-count="true" aria-label="Star fabricjs/fabric.js on GitHub">Star</a>
+  </li>
+  <li class="twitter secondary">
+    <a href="https://twitter.com/fabricjs" class="twitter-follow-button" data-show-count="true">Follow @fabricjs</a>
+  </li>
+</ul>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+(function() {
+
+  if (document.location.hostname === 'localhost') {
+    var links = document.getElementById('header').getElementsByTagName('a');
+    for (var i = 0, len = links.length; i < len; i++) {
+      // very retarted fix but fuck it
+      links[i].href = links[i].href.replace('fabricjs.com', 'localhost:4000');
+    }
+  }
+  else {
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  }
+})();
+</script>
+
+    <p style="background: #ffc; padding: 5px; display: inline-block; margin-left: 10px; margin-bottom: -30px">
+      This demo uses custom version of Fabric with touch events enabled. Try dragging an image, shaking, longpressing it or changing orientation.
+    </p>
+
+    <div id="bd-wrapper">
+      <h2><span>Fabric.js demos</span> &middot; Touch events</h2>
+
+      <p id="info" style="background: #eef; width: 583px; padding: 10px; overflow: scroll; height: 40px"> </p>
+
+<canvas id="c" width="600" height="500" style="border:1px solid #ccc"></canvas>
+
+<script id="main">
+var canvas = new fabric.Canvas('c');
+fabric.Image.fromURL('../assets/pug_small.jpg', function(img) {
+  img.scale(0.5).set({
+    left: 150,
+    top: 150,
+    angle: -15
+  });
+  canvas.add(img).setActiveObject(img);
+});
+
+var info = document.getElementById('info');
+
+canvas.on({
+  'touch:gesture': function() {
+    var text = document.createTextNode(' Gesture ');
+    info.insertBefore(text, info.firstChild);
+  },
+  'touch:drag': function() {
+    var text = document.createTextNode(' Dragging ');
+    info.insertBefore(text, info.firstChild);
+  },
+  'touch:orientation': function() {
+    var text = document.createTextNode(' Orientation ');
+    info.insertBefore(text, info.firstChild);
+  },
+  'touch:shake': function() {
+    var text = document.createTextNode(' Shaking ');
+    info.insertBefore(text, info.firstChild);
+  },
+  'touch:longpress': function() {
+    var text = document.createTextNode(' Longpress ');
+    info.insertBefore(text, info.firstChild);
+  }
+});
+</script>
+
+    </div>
+
+    <script>
+      (function(){
+        var mainScriptEl = document.getElementById('main');
+        if (!mainScriptEl) return;
+        var preEl = document.createElement('pre');
+        var codeEl = document.createElement('code');
+        codeEl.innerHTML = mainScriptEl.innerHTML;
+        codeEl.className = 'language-javascript';
+        preEl.appendChild(codeEl);
+        document.getElementById('bd-wrapper').appendChild(preEl);
+      })();
+    </script>
+  </body>
+</html>

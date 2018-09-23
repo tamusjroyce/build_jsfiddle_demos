@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="kitchensink">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Standalone Controls | Fabric.js Demos</title>
+    
+    <link rel="stylesheet" href="../css/master.css">
+    <link rel="stylesheet" href="../css/ads.css">
+    <link rel="stylesheet" href="../css/prism.css">
+    <style>
+      pre { margin-left: 15px !important }
+    </style>
+    <script src="../lib/prism.js"></script>
+    <script>
+      (function() {
+        var fabricUrl = '../lib/fabric.js';
+        if (document.location.search.indexOf('load_fabric_from=') > -1) {
+          var match = document.location.search.match(/load_fabric_from=([^&]*)/);
+          if (match && match[1]) {
+            fabricUrl = match[1];
+          }
+        }
+        document.write('<script src="' + fabricUrl + '"><\/script>');
+      })();
+    </script>
+    <script src="../js/master.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js"></script>
+  </head>
+  <body>
+    <ul id="header">
+  <li><a href="http://fabricjs.com/">Home</a></li>
+  <li><a href="http://fabricjs.com/demos">Demos</a></li>
+  <li><a href="http://fabricjs.com/articles">Tutorial</a></li>
+  <li><a href="http://fabricjs.com/docs">Docs</a></li>
+  <li><a href="http://fabricjs.com/build">Custom Build</a></li>
+  <li><a href="http://fabricjs.com/help">Support</a></li>
+  <li><a href="http://fabricjs.com/test">Tests/Benchmarks</a></li>
+  <li><a href="http://fabricjs.com/team">Team</a></li>
+  <li class="github secondary">
+    <!-- Place this tag where you want the button to render. -->
+    <a class="github-button" href="https://github.com/fabricjs/fabric.js" data-size="large" data-show-count="true" aria-label="Star fabricjs/fabric.js on GitHub">Star</a>
+  </li>
+  <li class="twitter secondary">
+    <a href="https://twitter.com/fabricjs" class="twitter-follow-button" data-show-count="true">Follow @fabricjs</a>
+  </li>
+  <li id="carbonads-container">
+    <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CKYIEK7E&placement=fabricjscom" id="_carbonads_js"></script>
+  </li>
+</ul>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+(function() {
+
+  if (document.location.hostname === 'localhost') {
+    var links = document.getElementById('header').getElementsByTagName('a');
+    for (var i = 0, len = links.length; i < len; i++) {
+      // very retarted fix but fuck it
+      links[i].href = links[i].href.replace('fabricjs.com', 'localhost:4000');
+    }
+  }
+  else {
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  }
+})();
+(function() {
+  fabric.util.addListener(fabric.window, 'load', function() {
+    setTimeout(function() {
+      var ads = document.getElementById('carbonads');
+      var ads2 = document.getElementById('carbonads-container');
+      var style = window.getComputedStyle(ads2);
+      if (!ads || style.display === 'none') {
+        var nag = document.getElementById('nag');
+        if (!nag) {
+          var newDiv = document.createElement('div');
+          newDiv.id = 'gentle-reminder';
+          newDiv.className = 'reminder';
+          newDiv.innerHTML = 'Do you like fabricJS?<br />If you want it continue running and you do not mind tech related ads, please allow this website in your adblocker.<br /><br />❤️ Thank You!';
+          document.body.appendChild(newDiv)
+        }
+      }
+    }, 4000);
+  });
+})();
+</script>
+
+
+    <div id="bd-wrapper" ng-controller="CanvasControls">
+      <h2><span>Fabric.js demos</span> &middot; Standalone Controls</h2>
+
+      <style>
+  .controls { display: inline-block; background: #fafafa; margin-left: 10px; padding: 15px; border-left: 1px dotted #aaa; height: 270px }
+  .canvas-container { display: inline-block; vertical-align: top; }
+  canvas { border: 1px solid #eee !important }
+  label span { width: 50px; display: inline-block }
+  *[type=range] { position: relative; top: 4px }
+  p:first-child { margin-top: 0 }
+  p:last-child { margin-bottom: 0 }
+</style>
+
+<canvas id="c" width="300" height="300" style="border:1px solid #ccc"></canvas>
+<div class="controls">
+  <p>
+    <label><span>Angle:</span> <input type="range" id="angle-control" value="0" min="0" max="360"></label>
+  </p>
+  <p>
+    <label><span>Left:</span> <input type="range" id="left-control" value="150" min="0" max="300"></label>
+  </p>
+  <p>
+    <label><span>Top:</span> <input type="range" id="top-control" value="150" min="0" max="300"></label>
+  </p>
+  <p>
+    <label><span>Scale:</span> <input type="range" id="scale-control" value="1" min="0.1" max="3" step="0.1"></label>
+  </p>
+  <p>
+    <label><span>SkewX:</span> <input type="range" id="skewX-control" value="0" min="0" max="80" step="1"></label>
+  </p>
+  <p>
+    <label><span>SkewY:</span> <input type="range" id="skewY-control" value="0" min="0" max="80" step="1"></label>
+  </p>
+</div>
+
+<script id="main">(function() {
+  var canvas = this.__canvas = new fabric.Canvas('c');
+  fabric.Object.prototype.transparentCorners = false;
+
+  var $ = function(id){return document.getElementById(id)};
+
+  var rect = new fabric.Rect({
+    width: 100,
+    height: 100,
+    top: 100,
+    left: 100,
+    fill: 'rgba(255,0,0,0.5)'
+  });
+
+  canvas.add(rect);
+
+  var angleControl = $('angle-control');
+  angleControl.oninput = function() {
+    rect.set('angle', parseInt(this.value, 10)).setCoords();
+    canvas.requestRenderAll();
+  };
+
+  var scaleControl = $('scale-control');
+  scaleControl.oninput = function() {
+    rect.scale(parseFloat(this.value)).setCoords();
+    canvas.requestRenderAll();
+  };
+
+  var topControl = $('top-control');
+  topControl.oninput = function() {
+    rect.set('top', parseInt(this.value, 10)).setCoords();
+    canvas.requestRenderAll();
+  };
+
+  var leftControl = $('left-control');
+  leftControl.oninput = function() {
+    rect.set('left', parseInt(this.value, 10)).setCoords();
+    canvas.requestRenderAll();
+  };
+
+  var skewXControl = $('skewX-control');
+  skewXControl.oninput = function() {
+    rect.set('skewX', parseInt(this.value, 10)).setCoords();
+    canvas.requestRenderAll();
+  };
+
+  var skewYControl = $('skewY-control');
+  skewYControl.oninput = function() {
+    rect.set('skewY', parseInt(this.value, 10)).setCoords();
+    canvas.requestRenderAll();
+  };
+
+  function updateControls() {
+    scaleControl.value = rect.scaleX;
+    angleControl.value = rect.angle;
+    leftControl.value = rect.left;
+    topControl.value = rect.top;
+    skewXControl.value = rect.skewX;
+    skewYControl.value = rect.skewY;
+  }
+  canvas.on({
+    'object:moving': updateControls,
+    'object:scaling': updateControls,
+    'object:resizing': updateControls,
+    'object:rotating': updateControls,
+    'object:skewing': updateControls
+  });
+})();
+</script>
+
+    </div>
+
+    <script>
+      (function(){
+        var mainScriptEl = document.getElementById('main');
+        if (!mainScriptEl) return;
+        var preEl = document.createElement('pre');
+        var codeEl = document.createElement('code');
+        codeEl.innerHTML = mainScriptEl.innerHTML;
+        codeEl.className = 'language-javascript';
+        preEl.appendChild(codeEl);
+        document.getElementById('bd-wrapper').appendChild(preEl);
+      })();
+    </script>
+
+    <script>
+(function() {
+  fabric.util.addListener(fabric.window, 'load', function() {
+    var canvas = this.__canvas || this.canvas,
+        canvases = this.__canvases || this.canvases;
+
+    canvas && canvas.calcOffset && canvas.calcOffset();
+
+    if (canvases && canvases.length) {
+      for (var i = 0, len = canvases.length; i < len; i++) {
+        canvases[i].calcOffset();
+      }
+    }
+  });
+})();
+</script>
+
+
+  </body>
+</html>

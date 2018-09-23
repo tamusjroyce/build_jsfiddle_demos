@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="kitchensink">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Loading custom fonts | Fabric.js Demos</title>
+    
+    <link rel="stylesheet" href="../css/googlefonts.css">
+    
+    <link rel="stylesheet" href="../css/master.css">
+    <link rel="stylesheet" href="../css/ads.css">
+    <link rel="stylesheet" href="../css/prism.css">
+    <style>
+      pre { margin-left: 15px !important }
+    </style>
+    <script src="../lib/prism.js"></script>
+    <script>
+      (function() {
+        var fabricUrl = '../lib/fabric.js';
+        if (document.location.search.indexOf('load_fabric_from=') > -1) {
+          var match = document.location.search.match(/load_fabric_from=([^&]*)/);
+          if (match && match[1]) {
+            fabricUrl = match[1];
+          }
+        }
+        document.write('<script src="' + fabricUrl + '"><\/script>');
+      })();
+    </script>
+    <script src="../js/master.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js"></script>
+  </head>
+  <body>
+    <ul id="header">
+  <li><a href="http://fabricjs.com/">Home</a></li>
+  <li><a href="http://fabricjs.com/demos">Demos</a></li>
+  <li><a href="http://fabricjs.com/articles">Tutorial</a></li>
+  <li><a href="http://fabricjs.com/docs">Docs</a></li>
+  <li><a href="http://fabricjs.com/build">Custom Build</a></li>
+  <li><a href="http://fabricjs.com/help">Support</a></li>
+  <li><a href="http://fabricjs.com/test">Tests/Benchmarks</a></li>
+  <li><a href="http://fabricjs.com/team">Team</a></li>
+  <li class="github secondary">
+    <!-- Place this tag where you want the button to render. -->
+    <a class="github-button" href="https://github.com/fabricjs/fabric.js" data-size="large" data-show-count="true" aria-label="Star fabricjs/fabric.js on GitHub">Star</a>
+  </li>
+  <li class="twitter secondary">
+    <a href="https://twitter.com/fabricjs" class="twitter-follow-button" data-show-count="true">Follow @fabricjs</a>
+  </li>
+  <li id="carbonads-container">
+    <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CKYIEK7E&placement=fabricjscom" id="_carbonads_js"></script>
+  </li>
+</ul>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+(function() {
+
+  if (document.location.hostname === 'localhost') {
+    var links = document.getElementById('header').getElementsByTagName('a');
+    for (var i = 0, len = links.length; i < len; i++) {
+      // very retarted fix but fuck it
+      links[i].href = links[i].href.replace('fabricjs.com', 'localhost:4000');
+    }
+  }
+  else {
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  }
+})();
+(function() {
+  fabric.util.addListener(fabric.window, 'load', function() {
+    setTimeout(function() {
+      var ads = document.getElementById('carbonads');
+      var ads2 = document.getElementById('carbonads-container');
+      var style = window.getComputedStyle(ads2);
+      if (!ads || style.display === 'none') {
+        var nag = document.getElementById('nag');
+        if (!nag) {
+          var newDiv = document.createElement('div');
+          newDiv.id = 'gentle-reminder';
+          newDiv.className = 'reminder';
+          newDiv.innerHTML = 'Do you like fabricJS?<br />If you want it continue running and you do not mind tech related ads, please allow this website in your adblocker.<br /><br />❤️ Thank You!';
+          document.body.appendChild(newDiv)
+        }
+      }
+    }, 4000);
+  });
+})();
+</script>
+
+
+    <div id="bd-wrapper" ng-controller="CanvasControls">
+      <h2><span>Fabric.js demos</span> &middot; Loading custom fonts</h2>
+
+      <style>
+.controls {
+	display: inline-block;
+}
+canvas {
+  border: 1px solid #999;
+}
+</style>
+
+<canvas id="c" width="500" height="500" style="border:1px solid #ccc"></canvas>
+<div class="controls">
+	<p>
+		Font-family: <select id="font-family"></select>
+	</p>
+</div>
+<script src="http://rawgit.com/bramstein/fontfaceobserver/master/fontfaceobserver.js" ></script>
+<script id="main">
+/*
+
+When working with custom fonts on a fabric canvas, it is recommended to
+use a font preloader. Not doing so is likely to cause texts that are
+imported onto the canvas to be rendered with a wrong (default) font. It
+can also cause you to see a FOUT (Flash of Unstyled Text) right after
+changing the font of a text. The reason behind this is that the browser
+will only load a font after it is used in the DOM. Preloading fonts
+prevents this from happening. In this example we are using Font Face
+Observer (https://github.com/bramstein/fontfaceobserver) to preload
+Google Fonts, using the following steps:
+
+- Add the custom fonts using @import in your CSS
+- Make an array containing the names of all the custom fonts
+- Load all the custom fonts using a promise or load them by request
+- When the promise is fulfilled, initialize the fabric canvas
+
+*/
+
+var canvas = new fabric.Canvas('c');
+// Define an array with all fonts
+var fonts = ["Pacifico", "VT323", "Quicksand", "Inconsolata"];
+
+var textbox = new fabric.Textbox('Lorum ipsum dolor sit amet', {
+  left: 50,
+  top: 50,
+  width: 150,
+  fontSize: 20
+});
+canvas.add(textbox).setActiveObject(textbox);
+fonts.unshift('Times New Roman');
+// Populate the fontFamily select
+var select = document.getElementById("font-family");
+fonts.forEach(function(font) {
+  var option = document.createElement('option');
+  option.innerHTML = font;
+  option.value = font;
+  select.appendChild(option);
+});
+
+// Apply selected font on change
+document.getElementById('font-family').onchange = function() {
+  if (this.value !== 'Times New Roman') {
+    loadAndUse(this.value);
+  } else {
+    canvas.getActiveObject().set("fontFamily", this.value);
+    canvas.requestRenderAll();
+  }
+};
+
+function loadAndUse(font) {
+  var myfont = new FontFaceObserver(font)
+  myfont.load()
+    .then(function() {
+      // when font is loaded, use it.
+      canvas.getActiveObject().set("fontFamily", font);
+      canvas.requestRenderAll();
+    }).catch(function(e) {
+      console.log(e)
+      alert('font loading failed ' + font);
+    });
+}
+
+// Load all fonts using Font Face Observer
+
+</script>
+
+    </div>
+
+    <script>
+      (function(){
+        var mainScriptEl = document.getElementById('main');
+        if (!mainScriptEl) return;
+        var preEl = document.createElement('pre');
+        var codeEl = document.createElement('code');
+        codeEl.innerHTML = mainScriptEl.innerHTML;
+        codeEl.className = 'language-javascript';
+        preEl.appendChild(codeEl);
+        document.getElementById('bd-wrapper').appendChild(preEl);
+      })();
+    </script>
+
+    <script>
+(function() {
+  fabric.util.addListener(fabric.window, 'load', function() {
+    var canvas = this.__canvas || this.canvas,
+        canvases = this.__canvases || this.canvases;
+
+    canvas && canvas.calcOffset && canvas.calcOffset();
+
+    if (canvases && canvases.length) {
+      for (var i = 0, len = canvases.length; i < len; i++) {
+        canvases[i].calcOffset();
+      }
+    }
+  });
+})();
+</script>
+
+
+  </body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="kitchensink">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Manage selection | Fabric.js Demos</title>
+    
+    <link rel="stylesheet" href="../css/master.css">
+    <link rel="stylesheet" href="../css/ads.css">
+    <link rel="stylesheet" href="../css/prism.css">
+    <style>
+      pre { margin-left: 15px !important }
+    </style>
+    <script src="../lib/prism.js"></script>
+    <script>
+      (function() {
+        var fabricUrl = '../lib/fabric.js';
+        if (document.location.search.indexOf('load_fabric_from=') > -1) {
+          var match = document.location.search.match(/load_fabric_from=([^&]*)/);
+          if (match && match[1]) {
+            fabricUrl = match[1];
+          }
+        }
+        document.write('<script src="' + fabricUrl + '"><\/script>');
+      })();
+    </script>
+    <script src="../js/master.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js"></script>
+  </head>
+  <body>
+    <ul id="header">
+  <li><a href="http://fabricjs.com/">Home</a></li>
+  <li><a href="http://fabricjs.com/demos">Demos</a></li>
+  <li><a href="http://fabricjs.com/articles">Tutorial</a></li>
+  <li><a href="http://fabricjs.com/docs">Docs</a></li>
+  <li><a href="http://fabricjs.com/build">Custom Build</a></li>
+  <li><a href="http://fabricjs.com/help">Support</a></li>
+  <li><a href="http://fabricjs.com/test">Tests/Benchmarks</a></li>
+  <li><a href="http://fabricjs.com/team">Team</a></li>
+  <li class="github secondary">
+    <!-- Place this tag where you want the button to render. -->
+    <a class="github-button" href="https://github.com/fabricjs/fabric.js" data-size="large" data-show-count="true" aria-label="Star fabricjs/fabric.js on GitHub">Star</a>
+  </li>
+  <li class="twitter secondary">
+    <a href="https://twitter.com/fabricjs" class="twitter-follow-button" data-show-count="true">Follow @fabricjs</a>
+  </li>
+  <li id="carbonads-container">
+    <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CKYIEK7E&placement=fabricjscom" id="_carbonads_js"></script>
+  </li>
+</ul>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+(function() {
+
+  if (document.location.hostname === 'localhost') {
+    var links = document.getElementById('header').getElementsByTagName('a');
+    for (var i = 0, len = links.length; i < len; i++) {
+      // very retarted fix but fuck it
+      links[i].href = links[i].href.replace('fabricjs.com', 'localhost:4000');
+    }
+  }
+  else {
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  }
+})();
+(function() {
+  fabric.util.addListener(fabric.window, 'load', function() {
+    setTimeout(function() {
+      var ads = document.getElementById('carbonads');
+      var ads2 = document.getElementById('carbonads-container');
+      var style = window.getComputedStyle(ads2);
+      if (!ads || style.display === 'none') {
+        var nag = document.getElementById('nag');
+        if (!nag) {
+          var newDiv = document.createElement('div');
+          newDiv.id = 'gentle-reminder';
+          newDiv.className = 'reminder';
+          newDiv.innerHTML = 'Do you like fabricJS?<br />If you want it continue running and you do not mind tech related ads, please allow this website in your adblocker.<br /><br />❤️ Thank You!';
+          document.body.appendChild(newDiv)
+        }
+      }
+    }, 4000);
+  });
+})();
+</script>
+
+
+    <div id="bd-wrapper" ng-controller="CanvasControls">
+      <h2><span>Fabric.js demos</span> &middot; Manage selection</h2>
+
+      <style>
+#drawing-mode {
+  margin-bottom: 10px;
+  vertical-align: top;
+}
+#drawing-mode-options {
+  display: inline-block;
+  vertical-align: top;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  background: #f5f2f0;
+  padding: 10px;
+}
+label {
+  display: inline-block; width: 130px;
+}
+.info {
+  display: inline-block;
+  width: 25px;
+  background: #ffc;
+}
+#bd-wrapper {
+  min-width: 1500px;
+}
+</style>
+
+<canvas id="c" width="450" height="450" style="border:1px solid #aaa"></canvas>
+
+<div style="display: inline-block; margin-left: 10px">
+  <button id="group" class="btn btn-info">Group selected objecs</button><br>
+  <button id="ungroup" class="btn btn-info">Ungroup selected objects</button><br>
+  <button id="multiselect" class="btn btn-info">Make a multiselection</button><br>
+  <button id="addmore" class="btn btn-info">Add more shapes</button><br>
+  <button id="discard" class="btn btn-info">Discard selection</button><br>
+</div>
+
+<script id="main">(function() {
+
+  function add() {
+    var red = new fabric.Rect({
+      top: 100, left: 0, width: 80, height: 50, fill: 'red' });
+    var blue = new fabric.Rect({
+      top: 0, left: 100, width: 50, height: 70, fill: 'blue' });
+    var green = new fabric.Rect({
+      top: 100, left: 100, width: 60, height: 60, fill: 'green' });
+    canvas.add(red, blue, green);
+  }
+
+  var $ = function(id){return document.getElementById(id)};
+
+  var canvas = this.__canvas = new fabric.Canvas('c');
+  var red = new fabric.Rect({
+    top: 100, left: 0, width: 80, height: 50, fill: 'red' });
+  var blue = new fabric.Rect({
+    top: 0, left: 100, width: 50, height: 70, fill: 'blue' });
+  var green = new fabric.Rect({
+    top: 100, left: 100, width: 60, height: 60, fill: 'green' });
+  fabric.Object.prototype.transparentCorners = false;
+  canvas.add(red, blue, green)
+  var group = $('group'),
+      ungroup = $('ungroup'),
+      multiselect = $('multiselect'),
+      addmore = $('addmore'),
+      discard = $('discard');
+
+      addmore.onclick = add;
+
+      multiselect.onclick = function() {
+        canvas.discardActiveObject();
+        var sel = new fabric.ActiveSelection(canvas.getObjects(), {
+          canvas: canvas,
+        });
+        canvas.setActiveObject(sel);
+        canvas.requestRenderAll();
+      }
+
+      group.onclick = function() {
+        if (!canvas.getActiveObject()) {
+          return;
+        }
+        if (canvas.getActiveObject().type !== 'activeSelection') {
+          return;
+        }
+        canvas.getActiveObject().toGroup();
+        canvas.requestRenderAll();
+      }
+
+      ungroup.onclick = function() {
+        if (!canvas.getActiveObject()) {
+          return;
+        }
+        if (canvas.getActiveObject().type !== 'group') {
+          return;
+        }
+        canvas.getActiveObject().toActiveSelection();
+        canvas.requestRenderAll();
+      }
+
+      discard.onclick = function() {
+        canvas.discardActiveObject();
+        canvas.requestRenderAll();
+      }
+
+
+})();
+</script>
+
+    </div>
+
+    <script>
+      (function(){
+        var mainScriptEl = document.getElementById('main');
+        if (!mainScriptEl) return;
+        var preEl = document.createElement('pre');
+        var codeEl = document.createElement('code');
+        codeEl.innerHTML = mainScriptEl.innerHTML;
+        codeEl.className = 'language-javascript';
+        preEl.appendChild(codeEl);
+        document.getElementById('bd-wrapper').appendChild(preEl);
+      })();
+    </script>
+
+    <script>
+(function() {
+  fabric.util.addListener(fabric.window, 'load', function() {
+    var canvas = this.__canvas || this.canvas,
+        canvases = this.__canvases || this.canvases;
+
+    canvas && canvas.calcOffset && canvas.calcOffset();
+
+    if (canvases && canvases.length) {
+      for (var i = 0, len = canvases.length; i < len; i++) {
+        canvases[i].calcOffset();
+      }
+    }
+  });
+})();
+</script>
+
+
+  </body>
+</html>

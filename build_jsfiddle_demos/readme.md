@@ -1,4 +1,4 @@
-This is a simple test that will be deprecated or deleted. First step in making sure I can develop build_jsfiddle_demos into a npm tool!
+Under Construction! This tool is not finished. It will be an independed node tool when completed.
 
 Please log an issue to my repository if you see this and I will promptly remove it. Appologies!
 
